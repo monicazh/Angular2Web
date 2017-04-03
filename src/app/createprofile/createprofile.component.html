@@ -1,0 +1,55 @@
+<div class="col-md-6 col-md-offset-3">
+  <br><br>
+  <h2>Create Player Profile</h2>
+  <form name="form" (ngSubmit)="create()" #f="ngForm">
+
+    <div class="form-group">
+      <label for="playerid">Player ID</label>
+      <input type="text" class="form-control" name="playerid" [(ngModel)]="model.playerid" #playerid="ngModel" />
+    </div>
+
+    <div class="form-group">
+      <label for="age">Age</label>
+      <input type="number" class="form-control" name="age" [(ngModel)]="model.age" #age="ngModel" min="1" max="110"/>
+    </div>
+
+    <div class="form-group" >
+      <label for="playtime">Play Time</label>
+      <input type="text" class="form-control" name="playtime" [(ngModel)]="model.playtime" #playtime="ngModel" />
+    </div>
+    <div class="form-group">
+      <label for="voice">Enable Voice Channel</label>
+      <select class="form-control" id="voice"
+              [(ngModel)]="model.voice" name="voice" #voice="ngModel">
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="gamelist">Interested Games</label>
+      <input type="text" class="form-control" name="gamelist" [(ngModel)]="model.gamelist" #gamelist="ngModel" />
+    </div>
+
+    <div class="form-group">
+      <label for="playstyle">Play Style</label>
+      <input type="text" class="form-control" name="playstyle" [(ngModel)]="model.playstyle" #playstyle="ngModel" />
+    </div>
+
+    <div class="form-group">
+      <label for="character">Game Characters</label>
+      <input type="text" class="form-control" name="character" [(ngModel)]="model.character" #character="ngModel" />
+    </div>
+
+    <div class="form-group">
+      <label for="file">Image</label>
+      <input type="file" #fileInput (change)="upload($event)" name="file" />
+    </div>
+
+    <div class="form-group">
+      <button [disabled]="loading" class="btn btn-primary">Create</button>
+      <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+      <a [routerLink]="['/register']" class="btn btn-default">Cancel</a>
+    </div>
+  </form>
+</div>
