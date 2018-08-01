@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-sm-7 col-md-offset-2" *ngIf="selectedGame">
+      <h1>Game "{{ selectedGame.name }}" details:</h1>
+      <div><label>Overview:&emsp;</label>{{selectedGame.intro}}</div>
+      <div><label>Platform:&emsp;</label>{{selectedGame.platform}}</div>
+      <div><label>Character:&emsp;</label>{{selectedGame.character}}</div>
+  </div>
+  <div class="col-sm-2 col-md-offset-1 text-center" *ngIf="isLogin"><br>
+    <div class="glyphicon glyphicon-user">{{currentUser.username}}</div>
+    <br><a [routerLink]="['/login']" class="btn btn-warning">Logout</a>
+  </div>
+</div>
+<hr>
+<div class="col-sm-8 col-md-offset-2" *ngIf="isLogin">
+  <h1>Interested Players:</h1>
+  <ul class="list-group">
+    <li class="list-group-item list-group-item-warning" *ngFor="let interestedPlayer of interestedPlayers">
+      <h3 class="list-group-item-heading">User {{interestedPlayer.username}}</h3>
+      <div *ngIf="isPlatformSupported[0] && interestedPlayer.interested_games[gameId-1].indexOf('XB1') != -1" class="list-group-item-text" style="display: inline-block;">XB1: {{interestedPlayer.playerid1}}</div>
+      <div *ngIf="isPlatformSupported[1] && interestedPlayer.interested_games[gameId-1].indexOf('XBox') != -1" class="list-group-item-text" style="display: inline-block;">| XBox: {{interestedPlayer.playerid2}}</div>
+      <div *ngIf="isPlatformSupported[2] && interestedPlayer.interested_games[gameId-1].indexOf('PS4') != -1" class="list-group-item-text" style="display: inline-block">| PS4: {{interestedPlayer.playerid3}}</div>
+      <div *ngIf="isPlatformSupported[3] && interestedPlayer.interested_games[gameId-1].indexOf('PS3') != -1" class="list-group-item-text" style="display: inline-block">| PS3: {{interestedPlayer.playerid4}}</div>
+      <div *ngIf="isPlatformSupported[4] && interestedPlayer.interested_games[gameId-1].indexOf('PC') != -1" class="list-group-item-text" style="display: inline-block">| PC: {{interestedPlayer.playerid5}}</div>
+    </li>
+  </ul>
+  <hr>
+  <h1>Add to {{currentUser.username}}'s list:</h1>
+  <div *ngIf="!isAdded2MyList" class="multiple-select"><label for="gamelist">Select Supported Platform</label>
+    <multiple-select [multipleSelect]="multipleSelect_Pf"></multiple-select>
+    <button class="btn btn-primary" (click)="addToMyList()">Add</button>
+  </div>
+  <div *ngIf="isAdded2MyList" >
+    <h3>Game {{ selectedGame.name }} has already been added in my interested list.</h3>
+  </div>
+</div>
+
+

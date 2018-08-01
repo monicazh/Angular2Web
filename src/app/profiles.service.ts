@@ -1,8 +1,6 @@
 import { Injectable,ElementRef, Input, ViewChild }    from '@angular/core';
 import { Headers, Http } from '@angular/http';
-//import 'rxjs/add/operator/toPromise/map';
 import 'rxjs/add/operator/map';
-
 import { Profile } from './profile';
 
 @Injectable()
@@ -11,33 +9,38 @@ export class ProfilesService {
   private headers = new Headers({'Content-Type': 'application/json'});
   private profilesUrl = 'api/profiles';
   private singleUrl = 'api/profile';
-  private imageUrl = 'api/images'
+  private imageUrl = 'api/images';
   //private profiles;
 
   constructor(private http: Http) {
-    console.log('Profile Service Initialized...');
+    //console.log('Profile Service Initialized...');
     //this.profiles = this.getProfiles();
   }
 
   getProfiles(){
     console.log("###Service#getProfiles()");
     return this.http.get(this.profilesUrl)
-      .map(res => res.json())
+      .map(res => res.json());
     //  .catch(this.handleError);
   }
+  getProfileById(id: number) {
+    const url = `${this.singleUrl}/${id}`;
+    return this.http.get(url)
+      .map(res => res.json());
+  }
 
-  create(profile: FormData) {
+  create(profile) {
     console.log("###Service#Create(), profile=",profile);
     //var headers = new Headers();
     //headers.append('Content-Type', 'application/json');
      return this.http
-       .post(this.profilesUrl, profile)
+       .post(this.profilesUrl, JSON.stringify(profile),{headers: this.headers})
        .map(res => res.json());
   }
 
-  // create player profile, update() is called here
-  // 1) Without image, using app.PUT()
-  // 2) With an image, using app.POST(), since multer is not supported by PUT
+  // 1) create player profile, update() is called here
+  //    Without/With image, using app.PUT()
+  // 2) update profile: [game-detail component]add an interested game to profile
   update(profile) {
     console.log("###Service## Update(), profile=",profile);
     const url = `${this.singleUrl}/${profile.myid}`;
@@ -48,12 +51,20 @@ export class ProfilesService {
 
   uploadImage(formData: FormData) {
     console.log("###Service#Upload(), formData=",formData);
-    //var headers = new Headers();
-    //headers.append('Content-Type', 'application/json');
+    var headers = new Headers();
+    headers.append('Content-Type', 'false');
     return this.http
       .post(this.imageUrl, formData)
       .map(res => res.json());
   }
+/*
+  uploadImage2(image) {
+    console.log("###Service#Upload()2222)");
+
+    return this.http
+      .post(this.imageUrl, JSON.stringify(image), {headers: this.headers})
+      .map(res => res.json());
+  }*/
 /*
   login(username: string, password: string) {
     return this.http.get(this.profilesUrl)

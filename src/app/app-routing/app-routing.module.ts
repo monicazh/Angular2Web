@@ -6,6 +6,11 @@ import { RegPlayersComponent } from '../reg-players/reg-players.component';
 import { HomeComponent } from '../home/home.component';
 import {RegisterComponent} from "../register/register.component";
 import {CreateprofileComponent} from "../createprofile/createprofile.component";
+import {CreateProfileComponent} from "../create-profile/create-profile.component";
+import {GamesComponent} from "../games/games.component";
+import {GameDetailComponent} from "../game-detail/game-detail.component"
+import { LfgComponent } from "../lfg/lfg.component";
+import { MyLfgComponent } from "../my-lfg/my-lfg.component"
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -14,8 +19,12 @@ const routes: Routes = [
   { path: 'register',  component: RegisterComponent },
   { path: 'reg-players',  component: RegPlayersComponent },
   { path: 'createprofile',  component: CreateprofileComponent },
-  /* { path: 'detail/:id', component: HeroDetailComponent },
-   { path: 'heroes',     component: HeroesComponent }*/
+  { path: 'create-profile',  component: CreateProfileComponent },
+  { path: 'games',  component: GamesComponent },
+  { path: 'games/:id',  component: GameDetailComponent },
+  { path: 'lfg',  component: LfgComponent },
+  { path: 'my-lfg',  component: MyLfgComponent },
+
 ];
 
 @NgModule({

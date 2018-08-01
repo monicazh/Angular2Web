@@ -7,6 +7,23 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <script src="https://www.gstatic.com/firebasejs/3.7.8/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDxiw56VWTuCeZdTKg5FVvwjmV3Lnt863M",
+      authDomain: "multiplayermatchup.firebaseapp.com",
+      databaseURL: "https://multiplayermatchup.firebaseio.com",
+      projectId: "multiplayermatchup",
+      storageBucket: "multiplayermatchup.appspot.com",
+      messagingSenderId: "388072924693"
+    };
+    firebase.initializeApp(config);
+  </script>
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
 </head>
 <body>
   <app-root>Loading...</app-root>

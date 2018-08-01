@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Profile } from '../profile';
 import { ProfilesService } from '../profiles.service';
 import { Router } from '@angular/router';
+import {AF} from "../providers/af";
 
 @Component({
   selector: 'app-reg-players',
@@ -15,12 +16,15 @@ export class RegPlayersComponent implements OnInit {
   selectedProfile: Profile;
   currentUser: Profile;
   isCreated = false;
+  isLogin = false;
 
   constructor(private profilesService: ProfilesService,
-              private router: Router) {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+              private router: Router,
+              private afService:AF) {
+    //this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.isAfLoggedIn();
     this.isProfileCreated();
-    console.log("reg-Players.Comp,currentUser:",this.currentUser, "isProfileCreated=",this.isCreated);
+    console.log("reg-Players.Comp,currentUser:",this.afService.displayName, "isProfileCreated=",this.isCreated);
   }
 
   getProfiles(): void {
@@ -42,6 +46,16 @@ export class RegPlayersComponent implements OnInit {
   }
 
   isProfileCreated(): void {
+    let createdProfile = this.profiles.filter(pf => {
+      return pf.username === this.afService.displayName;
+      });
+    console.log("isProfileCreated(),createdProfile=",createdProfile);
+    console.log("isProfileCreated(),displayName=",this.afService.displayName);
+    console.log("isProfileCreated(),profiles=",this.profiles);
+    if(createdProfile.length){
+      this.isCreated = true;
+    }
+    /*
     if(this.currentUser) {
       if (this.currentUser.myid) {
         this.isCreated = true;
@@ -49,6 +63,13 @@ export class RegPlayersComponent implements OnInit {
       else {
         this.isCreated = false;
       }
+    }*/
+  }
+
+  isAfLoggedIn(){
+    console.log('isAfLoggedIn, displayName=', this.afService.displayName);
+    if(this.afService.displayName){
+      this.isLogin = true;
     }
   }
 }

@@ -4,6 +4,7 @@ import { AlertService } from '../alert.service';
 import { AuthenticationService } from '../authentication.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Http, Headers } from '@angular/http';
+import {AF} from "../providers/af";
 
 @Component({
   selector: 'app-login',
@@ -14,13 +15,15 @@ export class LoginComponent implements OnInit {
   model: any = {};
   loading = false;
   returnUrl: string;
+  public error: any;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
     private profilesService: ProfilesService,
-    private alertService: AlertService) { }
+    private alertService: AlertService,
+    public afService: AF) { }
 
   ngOnInit() {
     // reset login status
@@ -76,18 +79,35 @@ export class LoginComponent implements OnInit {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
   }
+
+  googleLogin(){
+    this.afService.loginWithGoogle().then((data) => {
+      // Send them to the homepage if they are logged in
+      this.router.navigate(['/home']);
+    })
+  }
+
+  facebookLogin() {
+    this.afService.loginWithFacebook().then((data) => {
+      // Send them to the homepage if they are logged in
+      this.router.navigate(['/home']);
+    })
+  }
+
+  loginWithEmail(event, email, password){
+    event.preventDefault();
+    this.afService.loginWithEmail(email, password).then(() => {
+      this.router.navigate(['/home']);
+    })
+      .catch((error: any) => {
+        if (error) {
+          this.error = error;
+          console.log(this.error);
+        }
+      });
+  }
+
+
 }
-  /*
-  login() {
-    this.loading = true;
-    this.authenticationService.login(this.model.username, this.model.password)
-      .subscribe(
-        data => {
-          this.router.navigate([this.returnUrl]);
-        },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
-        });
-  }*/
+
 

@@ -1,23 +1,23 @@
 <div class="row">
 <div class="col-sm-5 col-md-offset-2">
-  <h1>Hi {{currentUser.username}}!</h1>
-  <h3>You're logged in Multiplayer Matchups!</h3></div>
+  <!--h1>Hi {{currentUser.username}}!</h1-->
+  <h1>All Registered Players: </h1></div>
 <div class="col-sm-3 col-md-offset-2">
   <br>
-  <a [routerLink]="['/login']" class="btn btn-default">Logout</a>
-  <a [routerLink]="['/createprofile']" class="btn btn-info" *ngIf="!isCreated" >Create Profile</a>
-  <a [routerLink]="['/createprofile']" class="btn btn-info" *ngIf="isCreated">View My Profile</a>
+  <a [routerLink]="['/create-profile']" class="btn btn-info" *ngIf="isLogin && !isCreated" >Create Profile</a>
+  <!--a [routerLink]="['/create-profile']" class="btn btn-info" *ngIf="isCreated">View My Profile</a-->
 </div>
 </div>
-<div class="text-center"><hr><h3>All Registered Players:</h3></div>
+<br>
+<hr>
 <div class="row">
   <div class="col-sm-5 col-md-offset-1">
-
-    <ul class="heroes">
-      <li *ngFor="let profile of profiles" (click)="onSelect(profile)"
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-warning" *ngFor="let profile of profiles" (click)="onSelect(profile)"
           [class.selected]="profile === selectedProfile">
-        <span class="badge">{{profile.gender}}</span>
-        <span>{{profile.name}}</span>
+        <!--span class="badge">{{profile.username}}</span>
+        <span>{{profile.platform}}</span-->
+        <div  class="list-group-item-text" style="display: inline-block;">user: {{profile.username}}</div>
       </li>
     </ul>
   </div>
@@ -29,9 +29,9 @@
       <div><label>email:</label>{{selectedProfile.email}}</div>
       <div><label>age:</label>{{selectedProfile.age}}</div>
       <div><label>gender:</label>{{selectedProfile.gender}}</div>
-    </div>
-    <div class="col-sm-4">
-      <div id="disp-image"><img id="profile-image" src="{{selectedProfile.image}}" style="width:200px;height:225px;"></div>
+      <div class="disp-image">
+        <img src="{{selectedProfile.image}}" /></div>
     </div></div>
   </div>
 </div>
+

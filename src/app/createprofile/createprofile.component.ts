@@ -15,13 +15,10 @@ export class CreateprofileComponent implements OnInit {
   model:any = {};
   loading = false;
   image = "uploads/profile_default_img.jpg";
-  //currentUser: Profile;
 
   constructor(private profilesService: ProfilesService,
               private router:Router,
-              private alertService: AlertService) {
-    //this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  }
+              private alertService: AlertService) {}
 
   ngOnInit() {
   }
@@ -29,6 +26,15 @@ export class CreateprofileComponent implements OnInit {
   upload(event){
     var file = event.srcElement.files;
     var image = file[0];
+
+    if(image.size/1024 > 500 )
+    {
+      alert('Please upload image less than 500KB. This file is: ' + image.size/1024 + "KB");
+      this.alertService.error('Image too large. Please upload less than 500KB.');
+      this.model.fileInput = '';
+      return
+    }
+
     console.log("###@@@@ CreateProfile: UPLOAD(), image=",image);
     var formData = new FormData();
     formData.append('image',image);
@@ -40,6 +46,7 @@ export class CreateprofileComponent implements OnInit {
             console.log("###@@@@ CreateProfile: UPLOAD(), this.image=",this.image);
           });
   }
+
 
   // create user profile: user profile exists when login.
   // Use _id to find this profile and update
@@ -53,6 +60,7 @@ export class CreateprofileComponent implements OnInit {
     this.model.password = currentUser.password;
     this.model.username = currentUser.username;
     this.model.image = this.image;
+    //this.model.image = this.data.image;
 
     console.log("### createProfile: create(), this.model:", this.model);
     console.log("### createProfile: create(), image:", this.model.image);

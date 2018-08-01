@@ -2,14 +2,57 @@
   <h1>{{ title }}</h1>
 </div>
 <div class="container">
+<div class="text-center" style="float: right" *ngIf="isLogin"><br>
+  <!--div class="glyphicon glyphicon-user">{{currentUser.username}}</div-->
+  <br><a [routerLink]="['/login']" class="btn btn-warning">Logout</a>
+</div>
+<div class="col-sm-10 col-md-offset-1">
   <h3>Purpose: {{purpose}}</h3>
   <hr>
   <h3 style="display:inline">Players Count: </h3>
   <h1 style="display:inline">{{playersCount}}</h1>
-</div>
-<hr>
+  <hr>
+  <h3>Current LFG Requests:</h3>
+  <h4>Filters</h4>
+  <div class="row">
+    <div class="col-sm-3">
+      <select class="btn btn-success form-control"  [(ngModel)]="filter_platform" (ngModelChange)="filterByPlatform($event)">
+        <option [disabled]="true" [value]="0">By Platform</option>
+        <option *ngFor="let platform of platforms" [value]="platform">{{platform}}</option>
+      </select>
+    </div>
+    <div class="col-sm-3">
+      <select class="btn btn-success form-control" [(ngModel)]="filter_game" (ngModelChange)="filterByGame($event)">
+        <option [disabled]="true" [value]="0">By Game</option>
+        <option *ngFor="let game of games" [value]="game">{{game}}</option>
+      </select>
+    </div>
+    <div class="col-sm-4" *ngIf="isLogin">
+      <select class="btn btn-success form-control" [(ngModel)]="filter_time" (ngModelChange)="filterByTime($event)">
+        <option [disabled]="true" [value]="0">By Preferred Time</option>
+        <option *ngFor="let time of filter_times" [value]="time.id">{{time.duration}}</option>
+      </select>
+    </div>
+    <div class="col-sm-2">
+      <button class="btn btn-danger" (click)="resetFilter()">Reset</button>
+    </div>
+  </div>
+  <br>
+  <ul class="list-group">
+    <li class="list-group-item list-group-item-warning" *ngFor="let lfg of lfgs | orderBy: '-lfg.creat_time'">
+      <h3 class="list-group-item-heading">LFG: {{lfg.game}}-{{lfg.platform}}:</h3>
+      <div  class="list-group-item-text" style="display: inline-block;">user: {{lfg.username}}</div>
+      <div  class="list-group-item-text" style="display: inline-block;"> | {{lfg.activity}}</div>
+      <div  class="list-group-item-text" style="display: inline-block;"> | Start:{{lfg.start_time | amDateFormat: 'YYYY-MM-DD HH:mm'}}</div>
+      <div  class="list-group-item-text" style="display: inline-block;float: right;"> Posted:{{lfg.creat_time|amTimeAgo}}</div>
+    </li>
+  </ul>
 
-<div class="row text-center container">
+</div>
+  <div class="col-sm-10 col-md-offset-1">
+    <hr><br>
+<div class="row text-center">
+
   <div class="col-sm-4">
     <img src="https://i.ytimg.com/vi/B7Y3DKLUqAQ/maxresdefault.jpg"
          class="img-responsive" style="width:100%" alt="Image">
@@ -25,5 +68,6 @@
          class="img-responsive" style="width:100%" alt="Image">
     <p>AD Position#3</p>
   </div>
+  </div>
 </div>
-
+</div>

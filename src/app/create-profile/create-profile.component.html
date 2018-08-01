@@ -1,0 +1,99 @@
+<div class="col-sm-5 col-md-offset-3">
+  <br><br>
+  <h2>Create Player Profile</h2>
+  <form name="form" (ngSubmit)="f.form.valid && create()" #f="ngForm" novalidate>
+    <div class="form-inline">
+      <label for="playerid">Player ID</label>
+      <div>
+      <label for="playerid1">XB1</label>
+      <input type="text" class="form-control" name="playerid1" [(ngModel)]="model.playerid1" #playerid1="ngModel" />
+      <label for="playerid2">XBox</label>
+      <input type="text" class="form-control" name="playerid2" [(ngModel)]="model.playerid2" #playerid2="ngModel" />
+      </div><br>
+      <div><label for="playerid3">PS4&nbsp;</label>
+      <input type="text" class="form-control" name="playerid3" [(ngModel)]="model.playerid3" #playerid3="ngModel" />
+      <label for="playerid4">PS3&nbsp;&nbsp;&nbsp;</label>
+      <input type="text" class="form-control" name="playerid4" [(ngModel)]="model.playerid4" #playerid4="ngModel" />
+      </div><br>
+      <div><label for="playerid5">PC&nbsp;&nbsp;&nbsp;</label>
+      <input type="text" class="form-control" name="playerid5" [(ngModel)]="model.playerid5" #playerid5="ngModel" />
+      </div></div>
+    <hr>
+    <div class="form-group" >
+      <label for="age">Age</label>
+      <input type="number" class="form-control" name="age" [(ngModel)]="model.age" #age="ngModel" [range]="[1, 110]"/>
+      <div *ngIf="age.errors?.range" class="help-block">Please input your valid age (1-110)!</div>
+    </div>
+    <hr>
+    <div class="form-group" >
+      <label for="playtime">Play Time</label>
+      <input type="text" class="form-control" name="playtime" [(ngModel)]="model.playtime" #playtime="ngModel" />
+    </div>
+    <hr>
+    <div class="form-group">
+      <label for="voice">Enable Voice Channel</label>
+      <!--select class="form-control" id="voice"
+              [(ngModel)]="model.voice" name="voice" #voice="ngModel">
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select-->
+      <multiple-select [multipleSelect]="multipleSelect_Mic"></multiple-select>
+
+    </div>
+    <hr>
+    <div class="multiple-selection">
+      <label for="gamelist">Interested Games</label>
+      <!--input type="text" class="form-control" name="gamelist" [(ngModel)]="model.gamelist" #gamelist="ngModel" /-->
+      <div class="multiple-select"><label for="gamelist1">Game:Destiny</label>
+      <multiple-select [multipleSelect]="multipleSelect_Destiny_Pf"></multiple-select></div>
+      <div class="multiple-select"><label for="gamelist2">Game:Diablo 3</label>
+      <multiple-select [multipleSelect]="multipleSelect_Diablo_Pf"></multiple-select></div>
+      <div class="multiple-select"><label for="gamelist3">Game:Left 4 Dead 2</label>
+      <multiple-select [multipleSelect]="multipleSelect_Left_Pf"></multiple-select></div>
+      <div class="multiple-select"><label for="gamelist4">Game:Call of Duty II</label>
+      <multiple-select [multipleSelect]="multipleSelect_CoD_Pf"></multiple-select></div>
+
+    </div>
+    <hr>
+    <div class="form-group">
+      <label for="playstyle">Play Style</label>
+      <!--input type="text" class="form-control" name="playstyle" [(ngModel)]="model.playstyle" #playstyle="ngModel" /-->
+      <div><label for="playstyle1">Game:Destiny</label>
+        <multiple-select class="multiple-select" [multipleSelect]="multipleSelect_Destiny"></multiple-select></div>
+      <div><label for="playstyle2">Game:Diablo 3</label>
+        <multiple-select class="multiple-select" [multipleSelect]="multipleSelect_Diablo"></multiple-select></div>
+      <div><label for="playstyle3">Game:Left 4 Dead 2</label>
+        <multiple-select class="multiple-select" [multipleSelect]="multipleSelect_Left"></multiple-select></div>
+      <div><label for="playstyle4">Game:Call of Duty II</label>
+        <multiple-select class="multiple-select" [multipleSelect]="multipleSelect_CoD"></multiple-select></div>
+    </div>
+
+    <hr>
+    <div class="form-group">
+      <label for="character">Game Characters</label>
+      <!--input type="text" class="form-control" name="character" [(ngModel)]="model.character" #character="ngModel" /-->
+      <div><label for="character1">Game:Destiny</label>
+        <multiple-select class="multiple-select" [multipleSelect]="multipleSelect_Destiny_Ch"></multiple-select></div>
+      <div><label for="character2">Game:Diablo 3</label>
+        <multiple-select class="multiple-select" [multipleSelect]="multipleSelect_Diablo_Ch"></multiple-select></div>
+      <div><label for="character3">Game:Left 4 Dead 2</label>
+        <multiple-select class="multiple-select" [multipleSelect]="multipleSelect_Left_Ch"></multiple-select></div>
+      <div><label for="character4">Game:Call of Duty II</label>
+        <multiple-select class="multiple-select" [multipleSelect]="multipleSelect_CoD_Ch"></multiple-select></div>
+    </div>
+    <hr>
+    <div class="form-group">
+      <label for="file">Image</label>
+      <input type="file" (change)="upload($event)" name="file" [(ngModel)]="model.fileInput" #fileInput="ngModel" />
+    </div>
+    <br>
+
+    <div>
+      <button [disabled]="loading" class="btn btn-primary">Create</button>
+      <img *ngIf="loading"
+           src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+      <a [routerLink]="['/register']" class="btn btn-default">Cancel</a>
+    </div>
+  </form>
+</div>
+

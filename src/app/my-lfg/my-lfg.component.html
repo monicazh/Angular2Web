@@ -1,0 +1,83 @@
+<div class="row">
+  <div class="col-sm-6 col-md-offset-2">
+    <h1>My LFG Requests</h1>
+    <h3>Only available for authenticated player.</h3>
+  </div>
+  <div class="col-sm-2 col-md-offset-1 text-center" *ngIf="isLogin"><br>
+    <div class="glyphicon glyphicon-user">{{currentUser.username}}</div>
+    <br><a [routerLink]="['/login']" class="btn btn-warning">Logout</a>
+  </div>
+</div>
+<hr>
+<div class="col-sm-7 col-md-offset-2">
+  <h3>LFG History:</h3>
+  <ul class="list-group">
+    <li class="list-group-item list-group-item-warning" *ngFor="let lfg of myLfgs | orderBy: '-lfg.creat_time'"
+        [class.active]="lfg === selectedLfg" (click)="onSelect(lfg)">
+      <h3 class="list-group-item-heading">LFG: {{lfg.game}}-{{lfg.platform}}:</h3>
+      <div  class="list-group-item-text" style="display: inline-block;">user: {{lfg.username}}</div>
+      <div  class="list-group-item-text" style="display: inline-block;"> | {{lfg.activity}}</div>
+      <div  class="list-group-item-text" style="display: inline-block;"> | Start:{{lfg.start_time|amDateFormat: 'YYYY-MM-DD HH:mm'}}</div>
+      <div  class="list-group-item-text" style="display: inline-block;float: right;"> Posted:{{lfg.creat_time|amTimeAgo}}</div>
+    </li>
+  </ul>
+  <hr>
+</div>
+<div *ngIf="selectedLfg">
+  <div class="col-sm-6 col-md-offset-2">
+    <form name="form"  #f="ngForm" novalidate>
+      <div class="row">
+        <div class="form-group col-sm-5">
+          <label for="platform">Platform</label>
+          <select class="form-control" name="platform" [(ngModel)]="model.platform" id="platform">
+            <option *ngFor="let platform of platforms" [value]="platform">{{platform}}</option>
+          </select>
+        </div>
+        <div class="form-group col-sm-5">
+          <label for="game">Game</label>
+          <select class="form-control" name="game" [(ngModel)]="model.game" id="game" >
+            <option *ngFor="let game of games" [value]="game">{{game}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-5">
+          <label for="type">Type</label>
+          <select class="form-control" name="type" [(ngModel)]="model.type" id="type" >
+            <option *ngFor="let type of types" [value]="type">{{type}}</option>
+          </select>
+        </div>
+        <div class="form-group col-sm-5">
+          <label for="activity">Activity</label>
+          <select class="form-control" name="activity" [(ngModel)]="model.activity" id="activity" >
+            <option *ngFor="let activity of activities" [value]="activity">{{activity}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-5 date">
+          <label>Start Time</label>
+          <input [value]="startTime | date: 'short'" [dateTimePicker]="startTime" (dateTimePickerChange)="setMoment($event)" readonly />
+        </div>
+        <div class="col-sm-5">
+          <label for="duration">Duration</label>
+          <div class="form-inline">
+            <input type="number" class="col-sm-3 form-control" style="width:60%" name="duration" [(ngModel)]="model.duration" #duration="ngModel" id="duration" />
+            <label>&emsp;Hour(s)</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" class="form-control" style="width:82%" name="description" [(ngModel)]="model.description" #duration="ngModel" id="description" />
+      </div>
+      <div>
+        <button [disabled]="loading" class="btn btn-primary" (click)="updateLfg()">Update</button>
+        <img *ngIf="loading"
+             src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+        <button class="btn btn-danger" (click)="deleteLfg()">Delete</button>
+        <a [routerLink]="['/lfg']" class="btn btn-default">View Others LFG</a>
+      </div>
+    </form>
+  </div>
+</div>
